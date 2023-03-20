@@ -86,7 +86,8 @@ func CALL_FUNCTION(numArgumentos int) {
 	}
 }
 
-func COMPARE_OP(op string) { //-----------------------------------------------------------------------------
+// COMPARE_OP Funcion que se encarga de comparar dos valores en pila mediante un operando recibido por el usuario
+func COMPARE_OP(op string) {
 	valor1 := pila.pop()
 	valor2 := pila.pop()
 
@@ -312,10 +313,12 @@ func BINARY_SUBSCR() {
 	pila.push(array[indice])
 }
 
+// JUMP_ABSOLUTE Funcion que se encarga de saltar sin importar que a un indice en especifico
 func JUMP_ABSOLUTE(target int) int {
 	return target
 }
 
+// JUMP_IF_TRUE Funcion que se encargar de saltar si en la pila se encuentra un "true" en un indice en especifico
 func JUMP_IF_TRUE() bool {
 	if pila.pop().(bool) {
 		return true
@@ -324,6 +327,7 @@ func JUMP_IF_TRUE() bool {
 	}
 }
 
+// JUMP_IF_FALSE Funcion que se encargar de saltar si en la pila se encuentra un "false" en un indice en especifico
 func JUMP_IF_FALSE() bool {
 	if !pila.pop().(bool) {
 		return true
@@ -355,6 +359,7 @@ func END() bool {
 
 //*********************************************Funciones en la conversion y lectura de textos y funciones*******************************
 
+// convertirPara Funcion que se encargar de obtener todos los parametros tipo []interface y convertirlo a su respectivo tipo de variable
 func convertirPara(listaAConvertir []string) []interface{} {
 	var instruccionesPerfectas []interface{}
 	for _, elemento := range listaAConvertir {
@@ -374,6 +379,7 @@ func convertirPara(listaAConvertir []string) []interface{} {
 	return instruccionesPerfectas
 }
 
+// leerTexto Funcion que se encarga de procesar el archivo y separara las lineas/parametros que ocuparemos para el contexto del proyecto
 func leerTexto() []interface{} {
 	fileData, err := os.ReadFile("archivoInstrucciones3.txt") //Obtiene el archivo
 
@@ -385,18 +391,19 @@ func leerTexto() []interface{} {
 	texto := string(fileData)                    //Obtiene todo el texto del archivo como un string
 	var lineas = strings.SplitAfter(texto, "\n") //Primero lo separa en líneas
 	instruccionesArchivo := make([]string, 0)
+
 	//Los corta por espacios entre instrucciones y parámetros, teniendo en cuenta los strings que pueden venir con espacios también "hello world"
 	for x := 0; x < len(lineas); x++ {
 		texto = lineas[x]
 		chop := strings.SplitN(texto, " ", 3)
 
 		recortarSaltos := []byte(chop[1])
-		if recortarSaltos[len(recortarSaltos)-1] == 10 {
+		if recortarSaltos[len(recortarSaltos)-1] == 10 { //Corta bits residuales en el texto de las intrucciones
 			recortarSaltos = append(recortarSaltos[:len(recortarSaltos)-2])
 		}
 		instruccionesArchivo = append(instruccionesArchivo, string(recortarSaltos))
 		if len(chop) > 2 { //Significa que tiene parámetro
-			recortarSaltos = []byte(chop[2])
+			recortarSaltos = []byte(chop[2]) //Corta bits residuales en los parametros de las instrucciones
 			recortarSaltos = append(recortarSaltos[:len(recortarSaltos)-2])
 			instruccionesArchivo = append(instruccionesArchivo, string(recortarSaltos))
 		}
@@ -405,6 +412,7 @@ func leerTexto() []interface{} {
 	return instruccionesPerfectas
 }
 
+//Funcion que se encarga de leer la pila de instrucciones y ejecutar cada una correspondientemente
 func leerInstrucciones(instruccionesArchivo []interface{}) {
 	for i := 0; i < len(instruccionesArchivo); i++ {
 		switch instruccionesArchivo[i] {
