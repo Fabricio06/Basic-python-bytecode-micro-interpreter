@@ -1,5 +1,7 @@
 package main
 
+// Fabricio Porras Morera 2021144223
+
 import (
 	"fmt"
 	"os"
@@ -381,7 +383,7 @@ func convertirPara(listaAConvertir []string) []interface{} {
 
 // leerTexto Funcion que se encarga de procesar el archivo y separara las lineas/parametros que ocuparemos para el contexto del proyecto
 func leerTexto() []interface{} {
-	fileData, err := os.ReadFile("archivoInstrucciones3.txt") //Obtiene el archivo
+	fileData, err := os.ReadFile("archivoInstrucciones.txt") //Obtiene el archivo
 
 	if err != nil { //Se confirma si se encuentra el archivo.txt
 		fmt.Println("Hubo un error encontrando el archivo")
@@ -412,7 +414,7 @@ func leerTexto() []interface{} {
 	return instruccionesPerfectas
 }
 
-//Funcion que se encarga de leer la pila de instrucciones y ejecutar cada una correspondientemente
+// Funcion que se encarga de leer la pila de instrucciones y ejecutar cada una correspondientemente
 func leerInstrucciones(instruccionesArchivo []interface{}) {
 	for i := 0; i < len(instruccionesArchivo); i++ {
 		switch instruccionesArchivo[i] {
